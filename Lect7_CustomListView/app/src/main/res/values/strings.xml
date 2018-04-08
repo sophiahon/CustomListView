@@ -8,6 +8,11 @@
         <item>Plato\'s Step Children</item>
         <item>The Naked Time</item>
         <item>The Trouble With Tribbles</item>
+        <item>Beam me up</item>
+        <item>Nuclear Wessels</item>
+        <item>Phasers on Stun</item>
+        <item>Live Long and Prosper</item>
+        <item>Kahn!!!</item>
     </string-array>
 
     <string-array name="episode_descriptions">
@@ -18,6 +23,11 @@
         <item>Captain Kirk and Spock play dress up.</item>
         <item>Sulu goes nuts.</item>
         <item>So cute!!</item>
+        <item>So good</item>
+        <item>So nice</item>
+        <item>Amazing</item>
+        <item>Wonderful</item>
+        <item>Marvelous</item>
     </string-array>
 
 

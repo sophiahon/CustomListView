@@ -143,6 +143,11 @@ class MyCustomAdapter extends BaseAdapter {
         episodeImages.add(R.drawable.st_platos_stepchildren__kirk_spock);
         episodeImages.add(R.drawable.st_the_naked_time__sulu_sword);
         episodeImages.add(R.drawable.st_the_trouble_with_tribbles__kirk_tribbles);
+        episodeImages.add(R.drawable.st_beam_me_up);
+        episodeImages.add(R.drawable.st_nuclear_wessels);
+        episodeImages.add(R.drawable.st_phasers_on_stun);
+        episodeImages.add(R.drawable.livelong_prosper);
+        episodeImages.add(R.drawable.st_khan);
     }
 
 //STEP 3: Override and implement getCount(..), ListView uses this to determine how many rows to render.
