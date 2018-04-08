@@ -1,7 +1,9 @@
 package com.example.sse.customlistview_sse;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     ListView lvEpisodes;     //Reference to the listview GUI component
     ListAdapter lvAdapter;   //Reference to the Adapter used to populate the listview.
 
+    private RatingBar rbEpisode;
+
+    //SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +48,55 @@ public class MainActivity extends AppCompatActivity {
         lvAdapter = new MyCustomAdapter(this.getBaseContext());  //instead of passing the boring default string adapter, let's pass our own, see class MyCustomAdapter below!
         lvEpisodes.setAdapter(lvAdapter);
 
+        rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
+
+        //shared preferences
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor editor = preferences.edit();
+
+        rbEpisode.setRating(preferences.getFloat("rating", 1));
+
+        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                editor.putFloat("rating", rbEpisode.getRating());
+                editor.apply();
+            }
+        });
+
+        //preferences = getSharedPreferences("Pref", Context.MODE_PRIVATE);
+
+        //final SharedPreferences.Editor editor = preferences.edit();
+
+//        if (preferences.contains("rating")){
+//            rbEpisode.setRating(preferences.getFloat("rating", 1));
+//        }
+//
+//        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+//                saveSharedPreferenceInfo();
+//            }
+//        });
+
+
     }
+//
+//    public void saveSharedPreferenceInfo (){
+//        preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putFloat("rating", rbEpisode.getRating());
+//        editor.apply();
+//
+//        Toast.makeText(this, "Shared Preference Data Updated.", Toast.LENGTH_LONG).show();
+//    }
+//
+//    public  void retrieveSharedPreferenceInfo(){
+//        preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
+//        if (preferences.contains("rating")){
+//            rbEpisode.setRating(preferences.getFloat("rating", 1));
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);  //if none of the above are true, do the default and return a boolean.
     }
 
-    
+
 
 }
 
