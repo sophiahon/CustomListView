@@ -71,11 +71,7 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);  //if none of the above are true, do the default and return a boolean.
     }
 
-    @Override
-    public void onItemClick(AdapterView<MyCustomAdapter>adapter, View v, int position){
-        Object item = adapter.getItemAtPosition(position);
-
-    }
+    
 
 }
 
