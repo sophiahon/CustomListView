@@ -72,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onItemClick(AdapterView<?>adapter, View v, int position){
-        
+    public void onItemClick(AdapterView<MyCustomAdapter>adapter, View v, int position){
+        Object item = adapter.getItemAtPosition(position);
+
     }
 
 }
