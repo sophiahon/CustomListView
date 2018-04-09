@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private RatingBar rbEpisode;
+    SharedPreferences.Editor editor;
+    SharedPreferences preferences;
 
     //SharedPreferences preferences;
 
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         lvAdapter = new MyCustomAdapter(this.getBaseContext());  //instead of passing the boring default string adapter, let's pass our own, see class MyCustomAdapter below!
         lvEpisodes.setAdapter(lvAdapter);
 
-        //rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
 
         lvEpisodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,20 +107,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-/***        //shared preferences
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor editor = preferences.edit();
 
-        rbEpisode.setRating(preferences.getFloat("rating", 0f));
+        //shared preferences
+
+        rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+
+        float rating = preferences.getFloat("rating", 0f);
+
+        rbEpisode.setRating(rating);
 
 
-        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                editor.putFloat("rating", rbEpisode.getRating());
-                editor.apply();
-            }
-        });
+//        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+//                editor.putFloat("rating", rbEpisode.getRating());
+//                editor.apply();
+//            }
+//        });
 
         //preferences = getSharedPreferences("Pref", Context.MODE_PRIVATE);
 
@@ -129,18 +136,21 @@ public class MainActivity extends AppCompatActivity {
 //            rbEpisode.setRating(preferences.getFloat("rating", 1));
 //        }
 //
-//        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-//            @Override
-//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-//                saveSharedPreferenceInfo();
-//            }
-//        });
-***/
+        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putFloat("rating", rbEpisode.getRating());
+                editor.apply();
+            }
+        });
+
 
     }
 
 //
-//    public void saveSharedPreferenceInfo (){
+//    public void onRatingChanged (RatingBar ratingBar, float rating){
 //        preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = preferences.edit();
 //        editor.putFloat("rating", rbEpisode.getRating());
