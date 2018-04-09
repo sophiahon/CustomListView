@@ -1,8 +1,10 @@
 package com.example.sse.customlistview_sse;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,9 +50,20 @@ public class MainActivity extends AppCompatActivity {
         lvAdapter = new MyCustomAdapter(this.getBaseContext());  //instead of passing the boring default string adapter, let's pass our own, see class MyCustomAdapter below!
         lvEpisodes.setAdapter(lvAdapter);
 
-        rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
+        //rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
 
-        //shared preferences
+        lvEpisodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                Log.v("Module Item Trigger", "Module item was triggered");
+                Toast.makeText(MainActivity.this, "OnItemClicked", Toast.LENGTH_LONG).show();
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://shop.startrek.com/help/"));
+                startActivity(browserIntent);
+
+            }
+        });
+
+/***        //shared preferences
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
 
@@ -78,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 //                saveSharedPreferenceInfo();
 //            }
 //        });
-
+***/
 
     }
 //
