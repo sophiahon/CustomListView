@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
 
-        rbEpisode.setRating(preferences.getFloat("rating", 1));
+        rbEpisode.setRating(preferences.getFloat("rating", 0f));
+
 
         rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 //
 //    public void saveSharedPreferenceInfo (){
 //        preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
