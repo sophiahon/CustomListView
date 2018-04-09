@@ -25,6 +25,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,11 +56,25 @@ public class MainActivity extends AppCompatActivity {
         lvEpisodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Log.v("Module Item Trigger", "Module item was triggered");
-                Toast.makeText(MainActivity.this, "OnItemClicked", Toast.LENGTH_LONG).show();
+
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://shop.startrek.com/help/"));
                 startActivity(browserIntent);
 
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "1-800-startrk"));
+                startActivity(dialIntent);
+
+                Uri uri = Uri.parse("smsto:0800000123");
+                Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
+                smsIntent.putExtra("sms_body", "Ouch!");
+                startActivity(smsIntent);
+
+                Intent audIntent = new Intent(Intent.ACTION_VIEW);
+                audIntent.setDataAndType(Uri.fromFile(new File("/Media/spock13.mp3")), "audio/mp3");
+                startActivity(audIntent);
+
+                Intent vidIntent = new Intent(Intent.ACTION_VIEW);
+                vidIntent.setDataAndType(Uri.parse("/Media/videoplayback.mp4"), "video/*");
+                startActivity(vidIntent);
             }
         });
 
