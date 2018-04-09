@@ -37,6 +37,19 @@ public class MainActivity extends AppCompatActivity {
     private
     ListView lvEpisodes;     //Reference to the listview GUI component
     ListAdapter lvAdapter;   //Reference to the Adapter used to populate the listview.
+    private String[] webSites = {
+            "http://www.imdb.com/title/tt0708449/",
+            "http://www.imdb.com/title/tt0708418/",
+            "http://www.imdb.com/title/tt0708483/?ref_=fn_al_tt_3",
+            "http://www.imdb.com/title/tt0708438/",
+            "http://www.imdb.com/title/tt0708443/",
+            "http://www.imdb.com/title/tt0708473/",
+            "http://www.imdb.com/title/tt0708480/"
+            };
+
+    private String trekShop = "https://shop.startrek.com/help/", phoneNumber = "1-800-startrk",
+            textValue = "Ouch!", audioPath="/Media/spock13.mp3", videoPath = "/Media/videoplayback.mp4";
+
 
     private RatingBar rbEpisode;
 
@@ -46,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         lvEpisodes = (ListView)findViewById(R.id.lvEpisodes);
         lvAdapter = new MyCustomAdapter(this.getBaseContext());  //instead of passing the boring default string adapter, let's pass our own, see class MyCustomAdapter below!
@@ -57,24 +72,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
 
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://shop.startrek.com/help/"));
+                //opening the webpage on imdb for each eposide
+                if(position <= 6){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSites[position]));
+                    startActivity(browserIntent);
+                };
+
+                //Open up the following page in an external
+                //browser: http://shop.startrek.com/info.php
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(trekShop));
                 startActivity(browserIntent);
 
-                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "1-800-startrk"));
+                //Open up the phone and predial 1-800-startrk.
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
                 startActivity(dialIntent);
 
-                Uri uri = Uri.parse("smsto:0800000123");
+                //Spawn an SMS with the following text. “Ouch!”
+                Uri uri = Uri.parse("smsto:"+phoneNumber);
                 Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
-                smsIntent.putExtra("sms_body", "Ouch!");
+                smsIntent.putExtra("sms_body", textValue);
                 startActivity(smsIntent);
 
+                //Play the audio of this phrase.
                 Intent audIntent = new Intent(Intent.ACTION_VIEW);
-                audIntent.setDataAndType(Uri.fromFile(new File("/Media/spock13.mp3")), "audio/mp3");
+                audIntent.setDataAndType(Uri.fromFile(new File(audioPath)), "audio/mp3");
                 startActivity(audIntent);
 
+                //Play the video of this iconic scene.
                 Intent vidIntent = new Intent(Intent.ACTION_VIEW);
-                vidIntent.setDataAndType(Uri.parse("/Media/videoplayback.mp4"), "video/*");
+                vidIntent.setDataAndType(Uri.parse(videoPath), "video/*");
                 startActivity(vidIntent);
+
             }
         });
 
