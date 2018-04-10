@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.media.Rating;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class MainActivity extends AppCompatActivity {
 
 //Step-By-Step, Fragment Transactions
@@ -52,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private RatingBar rbEpisode;
-    SharedPreferences.Editor editor;
     SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
 
     //SharedPreferences preferences;
 
@@ -110,14 +113,17 @@ public class MainActivity extends AppCompatActivity {
 
         //shared preferences
 
-        rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
+//        rbEpisode = (RatingBar) findViewById(R.id.rbEpisode);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = preferences.edit();
-
-        float rating = preferences.getFloat("rating", 0f);
-
-        rbEpisode.setRating(rating);
+//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        editor = preferences.edit();
+//
+//        float rating = preferences.getFloat("rating", 0f);
+//
+//        adapter.add(dataSet);
+//        adapter.notifyDataSetChanged();
+//        Log.e("MAIN","the preferences of rating is: "+ rating);
+//        rbEpisode.setRating(rating);
 
 
 //        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -136,15 +142,15 @@ public class MainActivity extends AppCompatActivity {
 //            rbEpisode.setRating(preferences.getFloat("rating", 1));
 //        }
 //
-        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putFloat("rating", rbEpisode.getRating());
-                editor.apply();
-            }
-        });
+//        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+//                preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.putFloat("rating", rbEpisode.getRating());
+//                editor.apply();
+//            }
+//        });
 
 
     }
@@ -239,16 +245,20 @@ class MyCustomAdapter extends BaseAdapter {
 //    ArrayList<String> episodes;
 //    ArrayList<String> episodeDescriptions;
 
+    RatingBar rbEpisode;
     Button btnRandom;
     Context context;   //Creating a reference to our context object, so we only have to get it once.  Context enables access to application specific resources.
                        // Eg, spawning & receiving intents, locating the various managers.
-
+    SharedPreferences preferences ;
+    SharedPreferences.Editor editor;
 //STEP 2: Override the Constructor, be sure to:
     // grab the context, the callback gets it as a parm.
     // load the strings and images into object references.
     public MyCustomAdapter(Context aContext) {
 //initializing our data in the constructor.
         context = aContext;  //saving the context we'll need it again.
+        preferences = context.getSharedPreferences("Rate", Context.MODE_PRIVATE);
+        editor = preferences.edit();
 
         episodes =aContext.getResources().getStringArray(R.array.episodes);  //retrieving list of episodes predefined in strings-array "episodes" in strings.xml
         episodeDescriptions = aContext.getResources().getStringArray(R.array.episode_descriptions);
@@ -296,7 +306,7 @@ class MyCustomAdapter extends BaseAdapter {
 //THIS IS WHERE THE ACTION HAPPENS.  getView(..) is how each row gets rendered.
 //STEP 5: Easy as A-B-C
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {  //convertView is Row (it may be null), parent is the layout that has the row Views.
+    public View getView(final int position, View convertView, ViewGroup parent) {  //convertView is Row (it may be null), parent is the layout that has the row Views.
 
 //STEP 5a: Inflate the listview row based on the xml.
         View row;  //this will refer to the row to be inflated or displayed if it's already been displayed. (listview_row.xml)
@@ -330,6 +340,27 @@ class MyCustomAdapter extends BaseAdapter {
                 Toast.makeText(context, randomMsg, Toast.LENGTH_LONG).show();
             }
         });
+
+
+        rbEpisode = row.findViewById(R.id.rbEpisode);
+        float rating = preferences.getFloat("rating"+position, 0f);
+//        Log.e("Adapter","the preferences of rating " + position + " is: "+ rating);
+        rbEpisode.setRating(rating);
+
+
+        rbEpisode.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                editor.putFloat("rating"+position, v);
+
+                editor.apply();
+                Log.e("Adapter","put to the preferences of rating" + position + " with: "+
+                        v);
+
+            }
+        });
+//
+
 
 //STEP 5c: That's it, the row has been inflated and filled with data, return it.
         return row;  //once the row is fully constructed, return it.  Hey whatif we had buttons, can we target onClick Events within the rows, yep!
